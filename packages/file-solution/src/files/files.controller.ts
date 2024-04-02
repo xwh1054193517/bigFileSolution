@@ -35,4 +35,10 @@ export class FilesController {
     // fs.cpSync(files[0].path, `${chunkDir}/${body.name}`);
     // fs.rmSync(files[0].path);
   }
+  @Post('getlist')
+  getList() {
+    return {
+      data: [1, 2],
+    };
+  }
 }

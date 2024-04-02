@@ -12,7 +12,7 @@
     <input id="fileInput" type="file"/>
     <script>
         const fileInput = document.querySelector('#fileInput');
-
+        axios.post('http://localhost:3000/files/getlist', {});
         const chunkSize = 20 * 1024;
 
         fileInput.onchange =  async function () {
@@ -34,7 +34,7 @@
                 data.append('files', chunk);
                 axios.post('http://localhost:3000/files/upload', data);
             })
-        
+            
         }
 
     </script>
