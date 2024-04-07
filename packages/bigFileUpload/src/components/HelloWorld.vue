@@ -1,38 +1,52 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { BigFileUpload } from '../../packages/index'
+const inputRef = ref('')
+let progress=ref(0)
+const bfu = new BigFileUpload({
+    file: undefined,
+    md5VerifyUrl: '/api/files/checkFileMd5',
+    uploadUrl: '/api/files/upload',
+    concurrency: 2,
+    chunkSize: 2 * 1024 * 100,
 
-defineProps<{ msg: string }>()
+    onProgress: ({percent, currPos}) => {
+      progress.value=percent
+      console.warn('onProgress', percent, currPos)
+    },
+    onSuccess: res => {
+      console.warn('onSuccess', res)
+    },
+    onFail: err => {
+      console.error(err)
+    }
+})
 
-const count = ref(0)
+
+function fileChange(event: any) {
+  const file = event.target?.files[0]
+  if(file) {
+    bfu.finalOptions.file = file
+  }
+}
+
+
+
+function upload() {
+  if(!bfu.finalOptions.file) return console.error('请选择上传文件')
+  // 开始上传
+  bfu.startUpload()
+}
+function pause() {
+  bfu.pause()
+}
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-
-  <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
-    <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
-    </p>
+  <div>
+    <input type="file" ref="inputRef" @change="fileChange"/>
+    <div>上传进度{{ progress }}</div>
+    <button @click="upload">上传</button>
+    <button @click="pause">暂停</button>
   </div>
-
-  <p>
-    Check out
-    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
-      >create-vue</a
-    >, the official Vue + Vite starter
-  </p>
-  <p>
-    Install
-    <a href="https://github.com/vuejs/language-tools" target="_blank">Volar</a>
-    in your IDE for a better DX
-  </p>
-  <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
 </template>
-
-<style scoped>
-.read-the-docs {
-  color: #888;
-}
-</style>

@@ -10,8 +10,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "npm-run-all --parallel dev:node dev:upload",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:node":"cd packages/file-solution && pnpm run start:dev"
+    "dev:node":"cd packages/file-solution && pnpm run start:dev",
+    "dev:upload":"cd packages/bigFileUpload && pnpm run dev"
   },
   "keywords": [],
   "author": "",
