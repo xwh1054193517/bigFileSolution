@@ -1,0 +1,7 @@
+class BigFileDownLoad{
+
+}
+
+export {
+    BigFileDownLoad
+}

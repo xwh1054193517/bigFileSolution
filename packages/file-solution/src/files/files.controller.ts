@@ -4,7 +4,6 @@ import {
   Post,
   UploadedFiles,
   UseInterceptors,
-  flatten,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
@@ -19,11 +18,12 @@ export class FilesController {
       dest: uploadDir,
     }),
   )
+  //上传文件
   async uploadFiles(
     @UploadedFiles() file: Array<Express.Multer.File>,
     @Body() body,
   ) {
-    //如果已经传完了 再调 把文件删掉
+    //如果已经传完了 没有missChunks时仍会调  把刚上传的文件删掉
     console.log('body', body);
     const { md5, chunk, type, name, chunks } = body;
     const chunkDir = `${uploadDir}/${md5}`;

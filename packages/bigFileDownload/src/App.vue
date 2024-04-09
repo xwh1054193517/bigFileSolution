@@ -1,30 +1,55 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { BigFileDownLoad } from '../packages/index'
+
+function downloadFile(blob: Blob, filename: string) {
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = filename
+  a.click()
+}
+
+const filename = 'ruoyi-vue-pro-master的副本.zip'
+const dl = new BigFileDownLoad({
+  // url: '/ggzy-portal-admin/base/file/download/' + fileId, // 必填
+  // fileSizeUrl: '/ggzy-portal-admin/base/file/download/size/' + fileId,
+  url: '/ruoyi-vue-pro-master的副本.zip',
+  // chunkSize: 25 * 1024 * 1024,
+  rangeRightClose: false,
+  concurrency: 6,
+  headers: {
+    token: '123456'
+  },
+  onSize: ({ size }) => {
+    console.log('file size: ', size)
+  },
+  onProgress: ({percent, loaded}) => {
+    console.log('onProgress', percent, loaded)
+  },
+  onSuccess: res => {
+    console.log('onSuccess', res)
+    downloadFile(res, filename)
+    // window.open(URL.createObjectURL(res))
+  },
+  onError: err => {
+    console.error(err)
+  }
+})
+
+function download() {
+  // 开始下载
+  dl.download()
+
+  // 暂停下载
+  // md.pause()
+}
+function pause() {
+  dl.pause()
+}
 </script>
 
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <button @click="download">下载</button>
+    <button @click="pause">暂停</button>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>

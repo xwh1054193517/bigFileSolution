@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse} from 'axios'
 import { type BigFileUploadOptions } from '../types'
-import merge from 'loadsh/merge'
-import sparkMd5 from 'spark-md5'
+import merge from 'lodash/merge'
+// import sparkMd5 from 'spark-md5'
 export class BigFileUpload{
     static readonly two_mb=2*1024*1024
     static readonly two_gb=BigFileUpload.two_mb*1024

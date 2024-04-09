@@ -1,4 +1,4 @@
-declare module 'loadsh/merge'{
-    const loadsh:any
-    export default loadsh
+declare module 'lodash/merge'{
+    const lodash:any
+    export default lodash
 }
